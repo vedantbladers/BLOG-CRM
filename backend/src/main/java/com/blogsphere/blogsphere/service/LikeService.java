@@ -1,6 +1,7 @@
 package com.blogsphere.blogsphere.service;
 
 import com.blogsphere.blogsphere.config.RabbitMQConfig;
+import com.blogsphere.blogsphere.dto.LikeStatusResponse;
 import com.blogsphere.blogsphere.event.EventEnvelope;
 import com.blogsphere.blogsphere.event.UserPostPayload;
 import com.blogsphere.blogsphere.exception.ResourceNotFoundException;
@@ -82,5 +83,12 @@ public class LikeService {
 
     public long getLikeCount(Long postId){
         return likeRepository.countByPostId(postId);
+    }
+
+    public LikeStatusResponse getLikeStatus(Long postId){
+        User user = currentUserProvider.getUser();
+        boolean liked = likeRepository.findByUserIdAndPostId(user.getId(), postId).isPresent();
+        long count = likeRepository.countByPostId(postId);
+        return new LikeStatusResponse(liked, count);
     }
 }

@@ -288,4 +288,10 @@ public class UserService {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found: " + username));
     }
+
+    public User getUserByUsernameOrEmail(String usernameOrEmail) {
+        return userRepository.findByUsername(usernameOrEmail)
+                .or(() -> userRepository.findByEmail(usernameOrEmail))
+                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + usernameOrEmail));
+    }
 }
