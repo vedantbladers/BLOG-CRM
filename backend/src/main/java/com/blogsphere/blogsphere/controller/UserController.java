@@ -4,6 +4,7 @@ import com.blogsphere.blogsphere.dto.AccountDeletionConfirmRequest;
 import com.blogsphere.blogsphere.dto.MessageResponse;
 import com.blogsphere.blogsphere.dto.UserRequest;
 import com.blogsphere.blogsphere.model.User;
+import com.blogsphere.blogsphere.security.CurrentUserProvider;
 import com.blogsphere.blogsphere.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,16 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final CurrentUserProvider currentUserProvider;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, CurrentUserProvider currentUserProvider) {
         this.userService = userService;
+        this.currentUserProvider = currentUserProvider;
+    }
+
+    @GetMapping("/me")
+    public User getCurrentUser() {
+        return currentUserProvider.getUser();
     }
 
     @PostMapping
