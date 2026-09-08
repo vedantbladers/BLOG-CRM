@@ -15,8 +15,9 @@ public class PostRequest {
 
     @NotBlank(message = "Slug is required")
     private String slug;
-    
+
     private String content;
+    @NotBlank(message = "Excerpt is required")
     private String excerpt;
     private Long categoryId;
     private Set<Long> tagIds;
