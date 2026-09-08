@@ -54,8 +54,12 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
 
-        User user = userService.getUserByUsername(request.getUsername());
-        String accessToken = jwtUtil.generateToken(request.getUsername());
+        // request.getUsername() may actually be an email — resolve the real
+        // account and use its canonical username for the token subject and
+        // any further lookups, so downstream code never has to care which
+        // identifier the person logged in with.
+        User user = userService.getUserByUsernameOrEmail(request.getUsername());
+        String accessToken = jwtUtil.generateToken(user.getUsername());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
 
         emailService.sendLoginAlertEmail(user.getEmail(), user.getDisplayName(), user.getUsername());
