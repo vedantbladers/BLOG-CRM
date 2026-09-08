@@ -1,5 +1,6 @@
 package com.blogsphere.blogsphere.controller;
 
+import com.blogsphere.blogsphere.dto.LikeStatusResponse;
 import com.blogsphere.blogsphere.model.Like;
 import com.blogsphere.blogsphere.service.LikeService;
 import org.springframework.web.bind.annotation.*;
@@ -27,5 +28,10 @@ public class LikeController {
     @GetMapping("/post/{postId}/count")
     public long getLikesCount(@PathVariable Long postId){
         return likeService.getLikeCount(postId);
+    }
+
+    @GetMapping("/post/{postId}/status")
+    public LikeStatusResponse getLikeStatus(@PathVariable Long postId){
+        return likeService.getLikeStatus(postId);
     }
 }
