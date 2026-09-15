@@ -1,6 +1,7 @@
 package com.blogsphere.blogsphere.service;
 
 import com.blogsphere.blogsphere.config.RabbitMQConfig;
+import com.blogsphere.blogsphere.dto.BookmarkStatusResponse;
 import com.blogsphere.blogsphere.event.EventEnvelope;
 import com.blogsphere.blogsphere.event.UserPostPayload;
 import com.blogsphere.blogsphere.exception.ResourceNotFoundException;
@@ -13,6 +14,8 @@ import com.blogsphere.blogsphere.security.CurrentUserProvider;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class BookmarkService {
@@ -74,5 +77,20 @@ public class BookmarkService {
 
     public long getBookmarkCount(Long postId){
         return bookmarkRepository.countByPostId(postId);
+    }
+
+    public BookmarkStatusResponse getBookmarkStatus(Long postId){
+        User user = currentUserProvider.getUser();
+        boolean bookmarked = bookmarkRepository.findByUserIdAndPostId(user.getId(), postId).isPresent();
+        long count = bookmarkRepository.countByPostId(postId);
+        return new BookmarkStatusResponse(bookmarked, count);
+    }
+
+    public List<Post> getMyBookmarkedPosts(){
+        User user = currentUserProvider.getUser();
+        return bookmarkRepository.findByUserId(user.getId())
+                .stream()
+                .map(Bookmark::getPost)
+                .toList();
     }
 }
