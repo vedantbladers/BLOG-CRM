@@ -1,6 +1,7 @@
 package com.blogsphere.blogsphere.service;
 
 import com.blogsphere.blogsphere.config.RabbitMQConfig;
+import com.blogsphere.blogsphere.dto.FollowStatusResponse;
 import com.blogsphere.blogsphere.event.EventEnvelope;
 import com.blogsphere.blogsphere.event.FollowPayload;
 import com.blogsphere.blogsphere.exception.ResourceNotFoundException;
@@ -85,5 +86,12 @@ public class FollowService {
 
     public long getFollowerCount(Long userId) {
         return followRepository.countByFollowingId(userId);
+    }
+
+    public FollowStatusResponse getFollowStatus(Long userId) {
+        User currentUser = currentUserProvider.getUser();
+        boolean following = followRepository.findByFollowerIdAndFollowingId(currentUser.getId(), userId).isPresent();
+        long followerCount = followRepository.countByFollowingId(userId);
+        return new FollowStatusResponse(following, followerCount);
     }
 }
