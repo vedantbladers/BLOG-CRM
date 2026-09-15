@@ -1,5 +1,6 @@
 package com.blogsphere.blogsphere.controller;
 
+import com.blogsphere.blogsphere.dto.FollowStatusResponse;
 import com.blogsphere.blogsphere.model.Follow;
 import com.blogsphere.blogsphere.service.FollowService;
 import org.springframework.web.bind.annotation.*;
@@ -27,5 +28,10 @@ public class FollowController {
     @GetMapping("/user/{userId}/count")
     public long getFollowerCount(@PathVariable Long userId) {
         return followService.getFollowerCount(userId);
+    }
+
+    @GetMapping("/user/{userId}/status")
+    public FollowStatusResponse getFollowStatus(@PathVariable Long userId) {
+        return followService.getFollowStatus(userId);
     }
 }
