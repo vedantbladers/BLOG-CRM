@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme {
+  /* -- Color: The Draft Desk -- */
+  --color-desk: #1b2a45;       /* ink-blue desk background */
+  --color-desk-dim: #16233a;   /* slightly darker, for depth */
+  --color-paper: #f2eee1;      /* the page */
+  --color-paper-dim: #e8e2d0;  /* recessed paper surfaces (inputs) */
+  --color-ink: #232323;        /* body text on paper */
+  --color-ink-soft: #5c574c;   /* secondary text on paper */
+  --color-brass: #b8863b;      /* accent: links, focus, primary actions */
+  --color-brass-dark: #96692a; /* accent hover/active */
+  --color-error: #8b3a3a;      /* muted red, errors only */
+  --color-success: #5b7a63;    /* muted sage, success only */
+
+  /* -- Type -- */
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  background-color: var(--color-desk);
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+}
+
+/* Visible keyboard focus everywhere, styled to match the brass accent */
+:focus-visible {
+  outline: 2px solid var(--color-brass);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
